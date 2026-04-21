@@ -60,7 +60,7 @@ export default function OnboardingModal() {
 
           {[
             { icon: Star,         cor: 'var(--gold)',    titulo: 'Protocolo Master R.E.G.U.L.A.®', desc: 'Base de todos os protocolos clínicos' },
-            { icon: BookOpen,     cor: 'var(--forest)',  titulo: '200+ Protocolos Clínicos',        desc: 'Organizados por queixa e categoria'  },
+            { icon: BookOpen,     cor: 'var(--forest)',  titulo: '100+ Protocolos Clínicos',        desc: 'Organizados por queixa e categoria'  },
             { icon: ClipboardList, cor: 'var(--forest)', titulo: 'Avaliação Guiada',                desc: 'Sugestão de protocolo por sintomas'   },
             { icon: Users,        cor: 'var(--forest)',  titulo: 'Gestão de Pacientes',             desc: 'Prontuários e evolução clínica'       },
           ].map(({ icon: Icon, cor, titulo, desc }) => (

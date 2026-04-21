@@ -3,6 +3,7 @@
 import { useState } from 'react';
 import { useRouter } from 'next/navigation';
 import { Save, User } from 'lucide-react';
+import { toast } from 'sonner';
 import AppHeader from '@/components/Layout/AppHeader';
 import { savePaciente, generateId } from '@/lib/pacientes-storage';
 
@@ -50,7 +51,7 @@ export default function NovoPacientePage() {
     if (!validar()) return;
     setSalvando(true);
     const agora = new Date().toISOString();
-    await savePaciente({
+    const { error } = await savePaciente({
       id: generateId(),
       userId: '',
       nome: form.nome.trim(),
@@ -63,6 +64,9 @@ export default function NovoPacientePage() {
       createdAt: agora,
       updatedAt: agora,
     });
+    setSalvando(false);
+    if (error) { toast.error(`Erro ao salvar paciente: ${error}`); return; }
+    toast.success('Paciente cadastrado com sucesso!');
     router.push('/pacientes');
   }
 

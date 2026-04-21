@@ -2,6 +2,7 @@
 
 import { useState, useEffect, useCallback } from 'react';
 import { Plus, Calendar, Clock, User, CheckCircle, XCircle, Trash2, ChevronDown, X, Stethoscope } from 'lucide-react';
+import { toast } from 'sonner';
 import AppHeader from '@/components/Layout/AppHeader';
 import { PROTOCOLOS } from '@/lib/protocolos';
 import {
@@ -304,7 +305,9 @@ export default function AgendamentoPage() {
   useEffect(() => { carregar(); }, [carregar]);
 
   async function handleSalvar(dados: Parameters<typeof addAgendamento>[0]) {
-    await addAgendamento(dados);
+    const { error } = await addAgendamento(dados);
+    if (error) { toast.error(`Erro ao agendar: ${error}`); return; }
+    toast.success('Agendamento salvo!');
     await carregar();
   }
 

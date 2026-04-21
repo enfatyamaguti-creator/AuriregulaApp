@@ -38,11 +38,11 @@ export async function getAgendamentos(): Promise<Agendamento[]> {
 
 export async function addAgendamento(
   dados: Omit<Agendamento, 'id' | 'createdAt' | 'status'>,
-): Promise<Agendamento | null> {
+): Promise<{ data: Agendamento | null; error: string | null }> {
   const supabase = createClient();
   const { data: { user } } = await supabase.auth.getUser();
-  if (!user) return null;
-  const { data } = await supabase
+  if (!user) return { data: null, error: 'Usuário não autenticado.' };
+  const { data, error } = await supabase
     .from('agendamentos')
     .insert({
       user_id: user.id,
@@ -55,7 +55,8 @@ export async function addAgendamento(
     })
     .select()
     .single();
-  return data ? mapAgendamento(data) : null;
+  if (error) console.error('[addAgendamento]', error.message, error.details);
+  return { data: data ? mapAgendamento(data) : null, error: error ? error.message : null };
 }
 
 export async function updateStatus(id: string, status: StatusAgendamento): Promise<void> {

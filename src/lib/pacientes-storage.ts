@@ -59,11 +59,11 @@ export async function getPacienteById(id: string): Promise<Paciente | undefined>
   return data ? mapPaciente(data) : undefined;
 }
 
-export async function savePaciente(paciente: Paciente): Promise<void> {
+export async function savePaciente(paciente: Paciente): Promise<{ error: string | null }> {
   const supabase = createClient();
   const { data: { user } } = await supabase.auth.getUser();
-  if (!user) return;
-  await supabase.from('pacientes').upsert({
+  if (!user) return { error: 'Usuário não autenticado.' };
+  const { error } = await supabase.from('pacientes').upsert({
     id: paciente.id,
     user_id: user.id,
     nome: paciente.nome,
@@ -74,6 +74,8 @@ export async function savePaciente(paciente: Paciente): Promise<void> {
     status: paciente.status,
     proximo_retorno: paciente.proximoRetorno ?? null,
   });
+  if (error) console.error('[savePaciente]', error.message, error.details);
+  return { error: error ? error.message : null };
 }
 
 export async function updatePacienteStatus(id: string, status: StatusPaciente): Promise<void> {
@@ -84,11 +86,11 @@ export async function updatePacienteStatus(id: string, status: StatusPaciente): 
 export async function addSessao(
   pacienteId: string,
   sessao: Omit<Sessao, 'id' | 'pacienteId' | 'createdAt'>,
-): Promise<void> {
+): Promise<{ error: string | null }> {
   const supabase = createClient();
   const { data: { user } } = await supabase.auth.getUser();
-  if (!user) return;
-  await supabase.from('sessoes').insert({
+  if (!user) return { error: 'Usuário não autenticado.' };
+  const { error } = await supabase.from('sessoes').insert({
     paciente_id: pacienteId,
     user_id: user.id,
     data_sessao: sessao.dataSessao,
@@ -104,6 +106,8 @@ export async function addSessao(
     ajustes: sessao.ajustes,
     proximo_retorno: sessao.proximoRetorno ?? null,
   });
+  if (error) console.error('[addSessao]', error.message, error.details);
+  return { error: error ? error.message : null };
 }
 
 export async function deletePaciente(id: string): Promise<void> {

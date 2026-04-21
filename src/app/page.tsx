@@ -11,35 +11,26 @@ const PLANOS = [
   {
     id: 'mensal',
     nome: 'Mensal',
-    preco: 'R$ 97',
+    preco: 'R$ 19,90',
     periodo: '/mês',
     detalhe: null,
     destaque: false,
     items: ['Acesso completo a todos os protocolos', 'Gestão de pacientes e prontuários', 'Agenda de sessões', 'Suporte por email'],
   },
   {
-    id: 'semestral',
-    nome: 'Semestral',
-    preco: 'R$ 447',
-    periodo: '/6 meses',
-    detalhe: 'R$ 74,50/mês · Economia de 23%',
-    destaque: true,
-    items: ['Tudo do plano mensal', 'Avaliação guiada por sintomas', 'Módulo Saúde da Mulher', 'Módulo Populações especiais'],
-  },
-  {
     id: 'anual',
     nome: 'Anual',
-    preco: 'R$ 797',
+    preco: 'R$ 97,90',
     periodo: '/ano',
-    detalhe: 'R$ 66,42/mês · Economia de 32%',
-    destaque: false,
-    items: ['Tudo do plano semestral', 'Atualizações de protocolos incluídas', 'Novos módulos em primeira mão', 'Suporte prioritário'],
+    detalhe: 'R$ 8,16/mês · Economia de 59%',
+    destaque: true,
+    items: ['Tudo do plano mensal', 'Atualizações de protocolos incluídas', 'Novos módulos em primeira mão', 'Suporte prioritário'],
   },
 ];
 
 const RECURSOS = [
   { icon: Star,          titulo: 'Protocolo Master R.E.G.U.L.A.®',  desc: 'Base neurofisiológica de todos os protocolos'       },
-  { icon: BookOpen,      titulo: '200+ Protocolos Clínicos',          desc: 'Organizados por queixa, grupo e população'          },
+  { icon: BookOpen,      titulo: '100+ Protocolos Clínicos',          desc: 'Organizados por queixa, grupo e população'          },
   { icon: ClipboardList, titulo: 'Avaliação Guiada',                   desc: 'Sugestão inteligente de protocolo por sintomas'      },
   { icon: Users,         titulo: 'Gestão de Pacientes',               desc: 'Prontuários digitais com evolução clínica'           },
   { icon: CalendarDays,  titulo: 'Agenda Integrada',                   desc: 'Agendamento e controle de sessões'                   },
@@ -57,7 +48,7 @@ const FAQS = [
   },
   {
     pergunta: 'Como funciona a garantia de 7 dias?',
-    resposta: 'Se por qualquer motivo você não estiver satisfeita com a plataforma nos primeiros 7 dias após a assinatura, devolvemos 100% do valor pago, sem perguntas. Basta entrar em contato com nosso suporte.',
+    resposta: 'Se por qualquer motivo você não estiver satisfeito com a plataforma nos primeiros 7 dias após a assinatura, devolvemos 100% do valor pago, sem perguntas. Basta entrar em contato com nosso suporte.',
   },
   {
     pergunta: 'Posso cancelar minha assinatura a qualquer momento?',
@@ -218,7 +209,7 @@ export default function LandingPage() {
             Escolha o plano ideal para sua prática · Garantia de 7 dias
           </p>
 
-          <div className="grid grid-cols-1 md:grid-cols-3 gap-5">
+          <div className="grid grid-cols-1 md:grid-cols-2 gap-5 max-w-2xl mx-auto">
             {PLANOS.map(plano => (
               <div
                 key={plano.id}
@@ -305,7 +296,7 @@ export default function LandingPage() {
           {[
             {
               icon: GraduationCap,
-              titulo: 'Recém-formadas',
+              titulo: 'Recém-formados',
               desc: 'Acabou de concluir sua formação e precisa de segurança nos atendimentos? Os protocolos guiados e a avaliação por sintomas vão estruturar sua prática desde o primeiro paciente.',
               cor: 'var(--forest)',
             },
@@ -346,7 +337,7 @@ export default function LandingPage() {
             Transforme sua prática clínica
           </h3>
           <p className="text-sm mb-7" style={{ color: 'var(--gray)' }}>
-            Junte-se às auriculoterapeutes que já aplicam o Método R.E.G.U.L.A.® com mais segurança e eficácia.
+            Junte-se aos auriculoterapeutas que já aplicam o Método R.E.G.U.L.A.® com mais segurança e eficácia.
           </p>
           <Link
             href="/login"

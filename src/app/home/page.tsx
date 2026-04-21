@@ -5,7 +5,7 @@ import { createServerSupabase } from '@/lib/supabase-server';
 import OnboardingModal from '@/components/OnboardingModal';
 
 const ATALHOS = [
-  { href: '/protocolos',  label: 'Protocolos',      icon: BookOpen,      cor: 'forest', desc: '200+ protocolos clínicos' },
+  { href: '/protocolos',  label: 'Protocolos',      icon: BookOpen,      cor: 'forest', desc: '100+ protocolos clínicos' },
   { href: '/avaliacao',   label: 'Avaliação',        icon: ClipboardList, cor: 'forest', desc: 'Sugerir protocolo'        },
   { href: '/agendamento', label: 'Agenda',           icon: CalendarDays,  cor: 'forest', desc: 'Agendar sessões'          },
   { href: '/mulher',      label: 'Saúde da Mulher',  icon: Heart,         cor: 'rose',   desc: 'Módulo 40+'              },

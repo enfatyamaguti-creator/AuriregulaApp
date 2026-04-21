@@ -3,6 +3,7 @@
 import { useState, useEffect } from 'react';
 import { useParams, useRouter } from 'next/navigation';
 import { Save } from 'lucide-react';
+import { toast } from 'sonner';
 import AppHeader from '@/components/Layout/AppHeader';
 import { PROTOCOLOS } from '@/lib/protocolos';
 import { addSessao, getPacienteById } from '@/lib/pacientes-storage';
@@ -67,7 +68,7 @@ export default function NovaSessaoPage() {
     const protocolo = PROTOCOLOS.find(p => p.id === protocoloId);
     const sessoes = paciente?.sessoes ?? [];
 
-    await addSessao(id, {
+    const { error } = await addSessao(id, {
       dataSessao: new Date().toISOString().split('T')[0],
       numeroSessao: sessoes.length + 1,
       queixaDia: queixa,
@@ -81,6 +82,9 @@ export default function NovaSessaoPage() {
       ajustes,
     });
 
+    setSalvando(false);
+    if (error) { toast.error(`Erro ao salvar sessão: ${error}`); return; }
+    toast.success('Sessão registrada!');
     router.replace(`/pacientes/${id}`);
   }
 

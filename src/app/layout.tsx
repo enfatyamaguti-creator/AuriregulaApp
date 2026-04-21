@@ -2,6 +2,7 @@ import type { Metadata, Viewport } from 'next';
 import { Cormorant_Garamond, DM_Sans } from 'next/font/google';
 import './globals.css';
 import AppShell from '@/components/Layout/AppShell';
+import { Toaster } from 'sonner';
 
 const cormorant = Cormorant_Garamond({
   variable: '--font-cormorant',
@@ -34,6 +35,7 @@ export default function RootLayout({ children }: { children: React.ReactNode }) 
     <html lang="pt-BR" className={`${cormorant.variable} ${dmSans.variable}`}>
       <body className="font-body antialiased">
         <AppShell>{children}</AppShell>
+        <Toaster position="top-right" richColors closeButton />
       </body>
     </html>
   );

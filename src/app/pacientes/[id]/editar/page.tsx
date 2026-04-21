@@ -3,6 +3,7 @@
 import { useState, useEffect } from 'react';
 import { useParams, useRouter } from 'next/navigation';
 import { Save } from 'lucide-react';
+import { toast } from 'sonner';
 import AppHeader from '@/components/Layout/AppHeader';
 import { getPacienteById, savePaciente } from '@/lib/pacientes-storage';
 import type { Paciente } from '@/types';
@@ -44,7 +45,7 @@ export default function EditarPacientePage() {
   async function salvar() {
     if (!paciente || !validar()) return;
     setSalvando(true);
-    await savePaciente({
+    const { error } = await savePaciente({
       ...paciente,
       nome: nome.trim(),
       idade: Number(idade) || 0,
@@ -52,6 +53,9 @@ export default function EditarPacientePage() {
       telefone: telefone.trim(),
       queixaPrincipal: queixaPrincipal.trim(),
     });
+    setSalvando(false);
+    if (error) { toast.error(`Erro ao salvar: ${error}`); return; }
+    toast.success('Dados atualizados!');
     router.replace(`/pacientes/${id}`);
   }
 
