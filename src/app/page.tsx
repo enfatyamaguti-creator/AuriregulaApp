@@ -89,7 +89,7 @@ function FaqItem({ pergunta, resposta }: { pergunta: string; resposta: string })
 
 function FaqSection() {
   return (
-    <section className="px-5 md:px-12 py-14 md:py-16" style={{ backgroundColor: 'white' }}>
+    <section className="px-5 md:px-12 py-14 md:py-16" >
       <div className="max-w-3xl mx-auto">
         <h3 className="font-display text-2xl md:text-3xl font-bold text-center mb-2" style={{ color: 'var(--charcoal)' }}>
           Perguntas frequentes
@@ -212,6 +212,54 @@ export default function LandingPage() {
           ))}
         </div>
       </section>
+
+      {/* Para quem é */}
+      <section className="px-5 md:px-12 py-14 md:py-16 w-full" style={{ backgroundColor: 'white' }}>
+        <div className="max-w-5xl mx-auto">
+        <h3 className="font-display text-2xl md:text-3xl font-bold text-center mb-2" style={{ color: 'var(--charcoal)' }}>
+          Para quem é o AuriRegula Pro?
+        </h3>
+        <p className="text-sm text-center mb-10" style={{ color: 'var(--gray)' }}>
+          Desenvolvido por e para profissionais da auriculoterapia clínica
+        </p>
+        <div className="grid grid-cols-1 md:grid-cols-3 gap-5">
+          {[
+            {
+              icon: GraduationCap,
+              titulo: 'Recém-formados',
+              desc: 'Acabou de concluir sua formação e precisa de segurança nos atendimentos? Os protocolos guiados e a avaliação por sintomas vão estruturar sua prática desde o primeiro paciente.',
+              cor: 'var(--forest)',
+            },
+            {
+              icon: Stethoscope,
+              titulo: 'Profissionais em atividade',
+              desc: 'Já atende mas quer aprofundar o raciocínio clínico? O Método R.E.G.U.L.A.® oferece embasamento neurofisiológico para elevar a qualidade dos seus resultados.',
+              cor: 'var(--gold)',
+            },
+            {
+              icon: Leaf,
+              titulo: 'Terapeutas integrativas',
+              desc: 'Trabalha com outras terapias e quer integrar a auriculoterapia ao seu atendimento? A plataforma organiza sua prática e facilita o registro de evolução clínica.',
+              cor: 'var(--rose)',
+            },
+          ].map(({ icon: Icon, titulo, desc, cor }) => (
+            <div key={titulo} className="card p-6 flex flex-col gap-4">
+              <div className="w-12 h-12 rounded-full flex items-center justify-center flex-shrink-0"
+                style={{ backgroundColor: `${cor}14` }}>
+                <Icon size={22} style={{ color: cor }} />
+              </div>
+              <div>
+                <p className="font-display text-lg font-bold mb-2" style={{ color: 'var(--charcoal)' }}>{titulo}</p>
+                <p className="text-sm leading-relaxed" style={{ color: 'var(--gray)' }}>{desc}</p>
+              </div>
+            </div>
+          ))}
+        </div>
+        </div>
+      </section>
+
+      {/* FAQ */}
+      <FaqSection />
 
       {/* Planos */}
       <section className="px-5 md:px-12 py-14 md:py-16" style={{ backgroundColor: 'white' }}>
@@ -358,52 +406,6 @@ export default function LandingPage() {
           </p>
         </div>
       </section>
-
-      {/* Para quem é */}
-      <section className="px-5 md:px-12 py-14 md:py-16 max-w-5xl mx-auto">
-        <h3 className="font-display text-2xl md:text-3xl font-bold text-center mb-2" style={{ color: 'var(--charcoal)' }}>
-          Para quem é o AuriRegula Pro?
-        </h3>
-        <p className="text-sm text-center mb-10" style={{ color: 'var(--gray)' }}>
-          Desenvolvido por e para profissionais da auriculoterapia clínica
-        </p>
-        <div className="grid grid-cols-1 md:grid-cols-3 gap-5">
-          {[
-            {
-              icon: GraduationCap,
-              titulo: 'Recém-formados',
-              desc: 'Acabou de concluir sua formação e precisa de segurança nos atendimentos? Os protocolos guiados e a avaliação por sintomas vão estruturar sua prática desde o primeiro paciente.',
-              cor: 'var(--forest)',
-            },
-            {
-              icon: Stethoscope,
-              titulo: 'Profissionais em atividade',
-              desc: 'Já atende mas quer aprofundar o raciocínio clínico? O Método R.E.G.U.L.A.® oferece embasamento neurofisiológico para elevar a qualidade dos seus resultados.',
-              cor: 'var(--gold)',
-            },
-            {
-              icon: Leaf,
-              titulo: 'Terapeutas integrativas',
-              desc: 'Trabalha com outras terapias e quer integrar a auriculoterapia ao seu atendimento? A plataforma organiza sua prática e facilita o registro de evolução clínica.',
-              cor: 'var(--rose)',
-            },
-          ].map(({ icon: Icon, titulo, desc, cor }) => (
-            <div key={titulo} className="card p-6 flex flex-col gap-4">
-              <div className="w-12 h-12 rounded-full flex items-center justify-center flex-shrink-0"
-                style={{ backgroundColor: `${cor}14` }}>
-                <Icon size={22} style={{ color: cor }} />
-              </div>
-              <div>
-                <p className="font-display text-lg font-bold mb-2" style={{ color: 'var(--charcoal)' }}>{titulo}</p>
-                <p className="text-sm leading-relaxed" style={{ color: 'var(--gray)' }}>{desc}</p>
-              </div>
-            </div>
-          ))}
-        </div>
-      </section>
-
-      {/* FAQ */}
-      <FaqSection />
 
       {/* CTA final */}
       <section className="px-5 md:px-12 py-14 text-center">
