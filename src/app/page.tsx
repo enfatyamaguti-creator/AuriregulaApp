@@ -115,8 +115,8 @@ export default function LandingPage() {
           <Image
             src="/images/AuriRegulaLogo.jpeg"
             alt="AuriRegula Pro"
-            width={44}
-            height={44}
+            width={56}
+            height={56}
             className="rounded-[10px] object-cover"
           />
           <div>
@@ -143,35 +143,49 @@ export default function LandingPage() {
         <div className="absolute bottom-0 left-0 w-48 h-48 rounded-full opacity-8"
           style={{ background: 'var(--gold)', transform: 'translate(-30%, 30%)' }} />
 
-        <div className="relative max-w-3xl mx-auto text-center">
-          <div
-            className="inline-block px-3 py-1 rounded-full text-xs font-semibold mb-5"
-            style={{ backgroundColor: 'rgba(184,151,74,0.20)', color: 'var(--gold)', border: '1px solid rgba(184,151,74,0.35)' }}
-          >
-            Plataforma clínica para auriculoterapeutos
-          </div>
-          <h2 className="font-display text-3xl md:text-5xl font-bold text-white leading-tight mb-4">
-            Auriculoterapia Clínica <br className="hidden md:block" />
-            Baseada em Evidências
-          </h2>
-          <p className="text-base md:text-lg mb-6" style={{ color: 'rgba(255,255,255,0.75)' }}>
-            O Método R.E.G.U.L.A.® transforma sua prática clínica com protocolos neurofisiológicos validados, gestão de pacientes e ferramentas de evolução.
-          </p>
-          <div className="mt-6 p-4 rounded-[14px] max-w-lg mx-auto mb-8" style={{ backgroundColor: 'rgba(255,255,255,0.08)', borderLeft: '3px solid var(--gold)' }}>
-            <p className="text-sm italic" style={{ color: 'rgba(255,255,255,0.90)' }}>
-              "Seu corpo não está apenas doente. Muitas vezes, ele está desregulado."
+        <div className="relative max-w-6xl mx-auto flex flex-col md:flex-row items-center gap-10 md:gap-16">
+          {/* Texto à esquerda */}
+          <div className="flex-1 text-left">
+            <div
+              className="inline-block px-3 py-1 rounded-full text-xs font-semibold mb-5"
+              style={{ backgroundColor: 'rgba(184,151,74,0.20)', color: 'var(--gold)', border: '1px solid rgba(184,151,74,0.35)' }}
+            >
+              Plataforma clínica para auriculoterapeutas
+            </div>
+            <h2 className="font-display text-3xl md:text-5xl font-bold text-white leading-tight mb-4">
+              Auriculoterapia Clínica <br className="hidden md:block" />
+              Baseada em Evidências
+            </h2>
+            <p className="text-base md:text-lg mb-6" style={{ color: 'rgba(255,255,255,0.75)' }}>
+              O Método R.E.G.U.L.A.® transforma sua prática clínica com protocolos neurofisiológicos validados, gestão de pacientes e ferramentas de evolução.
+            </p>
+            <div className="p-4 rounded-[14px] mb-8" style={{ backgroundColor: 'rgba(255,255,255,0.08)', borderLeft: '3px solid var(--gold)' }}>
+              <p className="text-sm italic" style={{ color: 'rgba(255,255,255,0.90)' }}>
+                "Seu corpo não está apenas doente. Muitas vezes, ele está desregulado."
+              </p>
+            </div>
+            <Link
+              href="/login"
+              className="inline-flex items-center gap-2 px-8 py-3.5 rounded-[12px] text-sm font-bold transition-all active:scale-95"
+              style={{ backgroundColor: 'var(--gold)', color: 'white', boxShadow: '0 4px 20px rgba(184,151,74,0.40)' }}
+            >
+              Começar agora
+            </Link>
+            <p className="text-xs mt-3" style={{ color: 'rgba(255,255,255,0.50)' }}>
+              · Garantia de 7 dias ·
             </p>
           </div>
-          <Link
-            href="/login"
-            className="inline-flex items-center gap-2 px-8 py-3.5 rounded-[12px] text-sm font-bold transition-all active:scale-95"
-            style={{ backgroundColor: 'var(--gold)', color: 'white', boxShadow: '0 4px 20px rgba(184,151,74,0.40)' }}
-          >
-            Começar agora
-          </Link>
-          <p className="text-xs mt-3" style={{ color: 'rgba(255,255,255,0.50)' }}>
-            Garantia de 7 dias · Cancele quando quiser
-          </p>
+
+          {/* Mockup à direita */}
+          <div className="flex-1 flex justify-center md:justify-end">
+            <Image
+              src="/images/MockupDevices.png"
+              alt="AuriRegula Pro nos dispositivos"
+              width={520}
+              height={400}
+              className="w-full max-w-sm md:max-w-lg object-contain drop-shadow-2xl"
+            />
+          </div>
         </div>
       </section>
 
@@ -181,7 +195,7 @@ export default function LandingPage() {
           Tudo que você precisa na prática clínica
         </h3>
         <p className="text-sm text-center mb-10" style={{ color: 'var(--gray)' }}>
-          Recursos desenvolvidos especialmente para auriculoterapeutos
+          Recursos desenvolvidos especialmente para auriculoterapeutas
         </p>
         <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4">
           {RECURSOS.map(({ icon: Icon, titulo, desc }) => (
@@ -202,9 +216,25 @@ export default function LandingPage() {
       {/* Planos */}
       <section className="px-5 md:px-12 py-14 md:py-16" style={{ backgroundColor: 'white' }}>
         <div className="max-w-5xl mx-auto">
-          <h3 className="font-display text-2xl md:text-3xl font-bold text-center mb-2" style={{ color: 'var(--charcoal)' }}>
-            Planos e preços
-          </h3>
+          <div className="relative flex items-center justify-center mb-2">
+            {/* <Image
+              src="/images/SeloGarantia7Dias.png"
+              alt="Garantia de 7 dias"
+              width={90}
+              height={90}
+              className="absolute left-0 top-1/2 -translate-y-1/2 opacity-90 rotate-[-10deg] hidden md:block"
+            /> */}
+            <h3 className="font-display text-2xl md:text-3xl font-bold text-center" style={{ color: 'var(--charcoal)' }}>
+              Planos e preços
+            </h3>
+            <Image
+              src="/images/SeloGarantia7Dias.png"
+              alt="Garantia de 7 dias"
+              width={120}
+              height={120}
+              className="absolute right-0 top-1/2 -translate-y-1/2 opacity-90 rotate-[10deg] hidden md:block"
+            />
+          </div>
           <p className="text-sm text-center mb-10" style={{ color: 'var(--gray)' }}>
             Escolha o plano ideal para sua prática · Garantia de 7 dias
           </p>
@@ -276,6 +306,51 @@ export default function LandingPage() {
                 </Link>
               </div>
             ))}
+          </div>
+
+          {/* Card Formação Completa */}
+          <div className="mt-8 max-w-2xl mx-auto relative rounded-[18px]"
+            style={{ background: 'linear-gradient(135deg, #b8974a 0%, #d4af6a 50%, #b8974a 100%)', boxShadow: '0 8px 40px rgba(184,151,74,0.40)' }}>
+            <div className="absolute -top-4 left-1/2 -translate-x-1/2 px-4 py-1.5 rounded-full text-[10px] font-bold uppercase tracking-wide whitespace-nowrap"
+              style={{ backgroundColor: 'var(--forest)', color: 'white' }}>
+              Pacote Completo · Melhor investimento
+            </div>
+            <div className="p-6 md:p-8 flex flex-col md:flex-row gap-6 items-start">
+              <div className="flex-1">
+                <p className="text-xs font-semibold uppercase tracking-wide mb-1" style={{ color: 'rgba(255,255,255,0.70)' }}>
+                  Formação
+                </p>
+                <h4 className="font-display text-xl md:text-2xl font-bold leading-snug mb-3" style={{ color: 'white' }}>
+                  Formação Completa em Auriculoterapia Clínica &amp; Integrativa
+                </h4>
+                <div className="flex items-end gap-1 mb-4">
+                  <span className="font-display text-4xl font-bold text-white">R$ 297,00</span>
+                  <span className="text-sm pb-1" style={{ color: 'rgba(255,255,255,0.70)' }}>à vista</span>
+                </div>
+                <ul className="space-y-2">
+                  {[
+                    'Plano anual do app AuriRegula Pro',
+                    'Curso de Auriculoterapia do Básico ao Avançado',
+                    'E-book: AuriRegula Protocolos de Auriculoterapia Clínica Baseada em Raciocínio Neurofisiológico',
+                    'E-book: Atlas Auricular',
+                  ].map(item => (
+                    <li key={item} className="flex items-start gap-2">
+                      <CheckCircle size={14} className="flex-shrink-0 mt-0.5" style={{ color: 'white' }} />
+                      <span className="text-sm" style={{ color: 'rgba(255,255,255,0.90)' }}>{item}</span>
+                    </li>
+                  ))}
+                </ul>
+              </div>
+              <div className="w-full md:w-auto md:self-center">
+                <Link
+                  href="/login"
+                  className="block text-center px-8 py-3.5 rounded-[12px] text-sm font-bold transition-all active:scale-95 whitespace-nowrap"
+                  style={{ backgroundColor: 'var(--forest)', color: 'white', boxShadow: '0 4px 16px rgba(26,58,42,0.30)' }}
+                >
+                  Quero a formação completa
+                </Link>
+              </div>
+            </div>
           </div>
 
           <p className="text-xs text-center mt-6" style={{ color: 'var(--gray-light)' }}>
