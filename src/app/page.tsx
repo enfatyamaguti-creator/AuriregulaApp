@@ -15,6 +15,7 @@ const PLANOS = [
     periodo: '/mês',
     detalhe: null,
     destaque: false,
+    checkout: process.env.NEXT_PUBLIC_CHECKOUT_MENSAL ?? '#',
     items: ['Acesso completo a todos os protocolos', 'Gestão de pacientes e prontuários', 'Agenda de sessões', 'Suporte por email'],
   },
   {
@@ -24,6 +25,7 @@ const PLANOS = [
     periodo: '/ano',
     detalhe: 'R$ 8,16/mês · Economia de 59%',
     destaque: true,
+    checkout: process.env.NEXT_PUBLIC_CHECKOUT_ANUAL ?? '#',
     items: ['Tudo do plano mensal', 'Atualizações de protocolos incluídas', 'Novos módulos em primeira mão', 'Suporte prioritário'],
   },
 ];
@@ -343,15 +345,17 @@ export default function LandingPage() {
                   ))}
                 </ul>
 
-                <Link
-                  href="/login"
+                <a
+                  href={plano.checkout}
+                  target="_blank"
+                  rel="noopener noreferrer"
                   className="block text-center py-3 rounded-[12px] text-sm font-bold transition-all active:scale-95"
                   style={plano.destaque
                     ? { backgroundColor: 'var(--gold)', color: 'white' }
                     : { backgroundColor: 'var(--forest)', color: 'white' }}
                 >
                   Assinar agora
-                </Link>
+                </a>
               </div>
             ))}
           </div>
@@ -390,13 +394,15 @@ export default function LandingPage() {
                 </ul>
               </div>
               <div className="w-full md:w-auto md:self-center">
-                <Link
-                  href="/login"
+                <a
+                  href={process.env.NEXT_PUBLIC_CHECKOUT_FORMACAO ?? '#'}
+                  target="_blank"
+                  rel="noopener noreferrer"
                   className="block text-center px-8 py-3.5 rounded-[12px] text-sm font-bold transition-all active:scale-95 whitespace-nowrap"
                   style={{ backgroundColor: 'var(--forest)', color: 'white', boxShadow: '0 4px 16px rgba(26,58,42,0.30)' }}
                 >
                   Quero a formação completa
-                </Link>
+                </a>
               </div>
             </div>
           </div>
