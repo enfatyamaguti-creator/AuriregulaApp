@@ -58,6 +58,9 @@ export async function POST(req: NextRequest) {
   try { body = await req.json(); }
   catch { return NextResponse.json({ error: 'Invalid JSON' }, { status: 400 }); }
 
+  // LOG TEMPORÁRIO — remover após identificar estrutura real
+  console.log('[webhook] PAYLOAD COMPLETO:', JSON.stringify(body, null, 2));
+
   const event     = body.event as string | undefined;
   const customer  = body.Customer as Record<string, string> | undefined;
   const sub       = body.Subscription as Record<string, unknown> | undefined;
