@@ -159,7 +159,7 @@ export async function POST(req: NextRequest) {
     }
 
     // ── 4. Refund / chargeback / cancelamento ─────────────────────────────────
-    if (['order_refunded', 'order_chargeback', 'subscription_cancelled', 'subscription_expired'].includes(event ?? '')) {
+    if (['order_refunded', 'order_chargeback', 'subscription_canceled', 'subscription_cancelled', 'subscription_expired'].includes(event ?? '')) {
       if (!user) {
         await supabase.from('cadastros_pendentes').delete().eq('email', email).eq('usado', false);
         return NextResponse.json({ ok: true, action: 'pendencia_removida' });
