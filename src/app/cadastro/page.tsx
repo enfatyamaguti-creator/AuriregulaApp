@@ -60,11 +60,10 @@ function CadastroForm() {
     setCarregando(false);
     if (!res.ok) { setErro(json.error ?? 'Erro ao criar conta.'); return; }
 
-    // Faz login automaticamente
+    // Faz login automaticamente — reload forçado para middleware reler a sessão
     const supabase = createClient();
     await supabase.auth.signInWithPassword({ email, password: senha });
-    router.refresh();
-    router.push('/home');
+    window.location.href = '/home';
   }
 
   // ── Verificando ────────────────────────────────────────────────────────────
