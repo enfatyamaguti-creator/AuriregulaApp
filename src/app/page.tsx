@@ -1,17 +1,17 @@
 'use client';
 
-'use client';
-
 import Link from 'next/link';
 import Image from 'next/image';
-import { useState } from 'react';
-import { CheckCircle, Star, BookOpen, ClipboardList, Users, CalendarDays, Heart, GraduationCap, Stethoscope, Leaf, ChevronDown } from 'lucide-react';
+import { useState, useEffect } from 'react';
+import { CheckCircle, Star, BookOpen, ClipboardList, Users, CalendarDays, Heart, GraduationCap, Stethoscope, Leaf, ChevronDown, X, Shield, ArrowRight, AlertCircle } from 'lucide-react';
 
 const PLANOS = [
   {
     id: 'mensal',
     nome: 'Mensal',
     preco: 'R$ 9,99',
+    precoOriginal: 'R$ 19,90',
+    lancamento: true,
     periodo: '/mês',
     detalhe: null,
     destaque: false,
@@ -22,12 +22,20 @@ const PLANOS = [
     id: 'anual',
     nome: 'Anual',
     preco: 'R$ 67,00',
+    precoOriginal: 'R$ 97,90',
+    lancamento: false,
     periodo: '/ano',
     detalhe: 'R$ 5,58/mês · Economia de 44%',
     destaque: true,
     checkout: process.env.NEXT_PUBLIC_CHECKOUT_ANUAL ?? '#',
     items: ['Tudo do plano mensal', 'Atualizações de protocolos incluídas', 'Novos módulos em primeira mão', 'Suporte prioritário'],
   },
+];
+
+const ANUNCIOS = [
+  { texto: 'Preço especial de lançamento — Plano Mensal por apenas ', destaque: 'R$ 9,99/mês', cta: 'Garantir minha vaga →' },
+  { texto: 'Formação Completa com curso + e-books + app por apenas ', destaque: 'R$ 197,00', cta: 'Saber mais →' },
+  { texto: 'Garantia incondicional de 7 dias — experimente ', destaque: 'sem risco', cta: 'Ver planos →' },
 ];
 
 const RECURSOS = [
@@ -62,7 +70,7 @@ const FAQS = [
   },
   {
     pergunta: 'A plataforma recebe atualizações com novos protocolos?',
-    resposta: 'Sim. O banco de protocolos é atualizado continuamente. Assinantes dos planos semestral e anual recebem as atualizações automaticamente, incluindo novos módulos e conteúdos clínicos.',
+    resposta: 'Sim. O banco de protocolos é atualizado continuamente. Assinantes do plano anual recebem as atualizações automaticamente, incluindo novos módulos e conteúdos clínicos.',
   },
 ];
 
@@ -89,30 +97,62 @@ function FaqItem({ pergunta, resposta }: { pergunta: string; resposta: string })
   );
 }
 
-function FaqSection() {
-  return (
-    <section className="px-5 md:px-12 py-14 md:py-16" >
-      <div className="max-w-3xl mx-auto">
-        <h3 className="font-display text-2xl md:text-3xl font-bold text-center mb-2" style={{ color: 'var(--charcoal)' }}>
-          Perguntas frequentes
-        </h3>
-        <p className="text-sm text-center mb-10" style={{ color: 'var(--gray)' }}>
-          Tire suas dúvidas antes de assinar
-        </p>
-        <div className="card p-4 md:p-6">
-          {FAQS.map(f => <FaqItem key={f.pergunta} pergunta={f.pergunta} resposta={f.resposta} />)}
-        </div>
-      </div>
-    </section>
-  );
-}
-
 export default function LandingPage() {
+  const [barVis, setBarVis] = useState(true);
+  const [msgIdx, setMsgIdx] = useState(0);
+  const [msgVis, setMsgVis] = useState(true);
+
+  // Carrossel com fade
+  useEffect(() => {
+    if (!barVis) return;
+    const id = setInterval(() => {
+      setMsgVis(false);
+      setTimeout(() => {
+        setMsgIdx(i => (i + 1) % ANUNCIOS.length);
+        setMsgVis(true);
+      }, 350);
+    }, 4500);
+    return () => clearInterval(id);
+  }, [barVis]);
+
+  const anuncio = ANUNCIOS[msgIdx];
+
   return (
     <div className="min-h-screen" style={{ backgroundColor: 'var(--cream)' }}>
 
-      {/* Nav */}
-      <nav className="flex items-center justify-between px-5 md:px-12 py-3 border-b" style={{ backgroundColor: 'white', borderColor: 'rgba(26,58,42,0.10)' }}>
+      {/* Barra de anúncio — fixa no topo */}
+      {barVis && (
+        <div className="fixed top-0 left-0 right-0 z-40 flex items-center justify-center px-10 py-2.5 text-center"
+          style={{ backgroundColor: '#1a3a2a' }}>
+          <p
+            className="text-xs font-medium transition-opacity duration-300"
+            style={{ color: 'rgba(255,255,255,0.92)', opacity: msgVis ? 1 : 0 }}
+          >
+            {anuncio.texto}
+            <strong style={{ color: 'var(--gold)' }}>{anuncio.destaque}</strong>.{' '}
+            <a href="#planos" className="underline font-semibold" style={{ color: 'var(--gold)' }}>
+              {anuncio.cta}
+            </a>
+          </p>
+          <button
+            onClick={() => setBarVis(false)}
+            className="absolute right-3 top-1/2 -translate-y-1/2 p-1 transition-opacity"
+            style={{ opacity: 0.55 }}
+            onMouseEnter={e => (e.currentTarget.style.opacity = '1')}
+            onMouseLeave={e => (e.currentTarget.style.opacity = '0.55')}
+            aria-label="Fechar"
+          >
+            <X size={14} color="white" />
+          </button>
+        </div>
+      )}
+
+      {/* Spacer para a barra fixa */}
+      <div style={{ height: barVis ? '40px' : 0, transition: 'height 0.3s ease' }} />
+
+      {/* Nav — normal no topo da página */}
+      <nav className="flex items-center justify-between px-5 md:px-12 py-3 border-b"
+        style={{ backgroundColor: 'white', borderColor: 'rgba(26,58,42,0.10)' }}>
         <Link href="/" className="flex items-center gap-3">
           <Image
             src="/images/AuriRegulaLogo.jpeg"
@@ -126,13 +166,22 @@ export default function LandingPage() {
             <h1 className="font-display text-lg font-bold leading-tight" style={{ color: 'var(--forest)' }}>AuriRegula Pro</h1>
           </div>
         </Link>
-        <Link
-          href="/login"
-          className="px-4 py-2 rounded-[10px] text-sm font-semibold transition-all active:scale-95"
-          style={{ backgroundColor: 'var(--forest)', color: 'white' }}
-        >
-          Entrar
-        </Link>
+        <div className="flex items-center gap-3">
+          <Link
+            href="/login"
+            className="hidden md:block text-sm font-medium transition-colors"
+            style={{ color: 'var(--gray)' }}
+          >
+            Entrar
+          </Link>
+          <a
+            href="#planos"
+            className="px-4 py-2 rounded-[10px] text-sm font-semibold transition-all active:scale-95"
+            style={{ backgroundColor: 'var(--forest)', color: 'white' }}
+          >
+            Ver planos
+          </a>
+        </div>
       </nav>
 
       {/* Hero */}
@@ -146,7 +195,6 @@ export default function LandingPage() {
           style={{ background: 'var(--gold)', transform: 'translate(-30%, 30%)' }} />
 
         <div className="relative max-w-6xl mx-auto flex flex-col md:flex-row items-center gap-10 md:gap-16">
-          {/* Texto à esquerda */}
           <div className="flex-1 text-left">
             <div
               className="inline-block px-3 py-1 rounded-full text-xs font-semibold mb-5"
@@ -155,30 +203,39 @@ export default function LandingPage() {
               Plataforma clínica para auriculoterapeutas
             </div>
             <h2 className="font-display text-3xl md:text-5xl font-bold text-white leading-tight mb-4">
-              Auriculoterapia Clínica <br className="hidden md:block" />
-              Baseada em Evidências
+              Atenda com mais <br className="hidden md:block" />
+              segurança e resultado
             </h2>
             <p className="text-base md:text-lg mb-6" style={{ color: 'rgba(255,255,255,0.75)' }}>
-              O Método R.E.G.U.L.A.® transforma sua prática clínica com protocolos neurofisiológicos validados, gestão de pacientes e ferramentas de evolução.
+              O Método R.E.G.U.L.A.® estrutura sua prática clínica com protocolos neurofisiológicos validados, gestão de pacientes e ferramentas de evolução — tudo em um só lugar.
             </p>
             <div className="p-4 rounded-[14px] mb-8" style={{ backgroundColor: 'rgba(255,255,255,0.08)', borderLeft: '3px solid var(--gold)' }}>
               <p className="text-sm italic" style={{ color: 'rgba(255,255,255,0.90)' }}>
                 "Seu corpo não está apenas doente. Muitas vezes, ele está desregulado."
               </p>
             </div>
-            <Link
-              href="/login"
+            <a
+              href="#planos"
               className="inline-flex items-center gap-2 px-8 py-3.5 rounded-[12px] text-sm font-bold transition-all active:scale-95"
               style={{ backgroundColor: 'var(--gold)', color: 'white', boxShadow: '0 4px 20px rgba(184,151,74,0.40)' }}
             >
-              Começar agora
-            </Link>
-            <p className="text-xs mt-3" style={{ color: 'rgba(255,255,255,0.50)' }}>
-              · Garantia de 7 dias ·
-            </p>
+              Começar por R$ 9,99/mês
+              <ArrowRight size={16} />
+            </a>
+            <div className="flex flex-wrap items-center gap-4 mt-4">
+              {[
+                { label: 'Acesso imediato',       iconColor: '#1a3a2a' },
+                { label: 'Cancele quando quiser', iconColor: 'var(--gold)' },
+                { label: 'Garantia de 7 dias',    iconColor: 'var(--gold)' },
+              ].map(({ label, iconColor }) => (
+                <span key={label} className="flex items-center gap-1 text-xs" style={{ color: 'rgba(255,255,255,0.60)' }}>
+                  <CheckCircle size={12} style={{ color: iconColor }} />
+                  {label}
+                </span>
+              ))}
+            </div>
           </div>
 
-          {/* Mockup à direita */}
           <div className="flex-1 flex justify-center md:justify-end">
             <Image
               src="/images/MockupDevices.png"
@@ -187,6 +244,25 @@ export default function LandingPage() {
               height={400}
               className="w-full max-w-sm md:max-w-lg object-contain drop-shadow-2xl"
             />
+          </div>
+        </div>
+      </section>
+
+      {/* Tira de confiança */}
+      <section className="px-5 md:px-12 py-4 border-b" style={{ backgroundColor: 'white', borderColor: 'rgba(26,58,42,0.10)' }}>
+        <div className="max-w-5xl mx-auto">
+          <div className="flex flex-wrap items-center justify-center gap-y-3 gap-x-8 md:gap-x-14">
+            {[
+              { destaque: '100+', sub: 'Protocolos clínicos' },
+              { destaque: 'Método R.E.G.U.L.A.®', sub: 'Registrado e validado' },
+              { destaque: 'Acesso imediato', sub: 'Após confirmação do pagamento' },
+              { destaque: '7 dias', sub: 'Garantia incondicional' },
+            ].map(({ destaque, sub }) => (
+              <div key={destaque} className="flex flex-col items-center text-center">
+                <p className="text-sm font-bold leading-tight" style={{ color: 'var(--forest)' }}>{destaque}</p>
+                <p className="text-[11px] leading-tight" style={{ color: 'var(--gray)' }}>{sub}</p>
+              </div>
+            ))}
           </div>
         </div>
       </section>
@@ -218,62 +294,96 @@ export default function LandingPage() {
       {/* Para quem é */}
       <section className="px-5 md:px-12 py-14 md:py-16 w-full" style={{ backgroundColor: 'white' }}>
         <div className="max-w-5xl mx-auto">
-        <h3 className="font-display text-2xl md:text-3xl font-bold text-center mb-2" style={{ color: 'var(--charcoal)' }}>
-          Para quem é o AuriRegula Pro?
-        </h3>
-        <p className="text-sm text-center mb-10" style={{ color: 'var(--gray)' }}>
-          Desenvolvido por e para profissionais da auriculoterapia clínica
-        </p>
-        <div className="grid grid-cols-1 md:grid-cols-3 gap-5">
-          {[
-            {
-              icon: GraduationCap,
-              titulo: 'Recém-formados',
-              desc: 'Acabou de concluir sua formação e precisa de segurança nos atendimentos? Os protocolos guiados e a avaliação por sintomas vão estruturar sua prática desde o primeiro paciente.',
-              cor: 'var(--forest)',
-            },
-            {
-              icon: Stethoscope,
-              titulo: 'Profissionais em atividade',
-              desc: 'Já atende mas quer aprofundar o raciocínio clínico? O Método R.E.G.U.L.A.® oferece embasamento neurofisiológico para elevar a qualidade dos seus resultados.',
-              cor: 'var(--gold)',
-            },
-            {
-              icon: Leaf,
-              titulo: 'Terapeutas integrativas',
-              desc: 'Trabalha com outras terapias e quer integrar a auriculoterapia ao seu atendimento? A plataforma organiza sua prática e facilita o registro de evolução clínica.',
-              cor: 'var(--rose)',
-            },
-          ].map(({ icon: Icon, titulo, desc, cor }) => (
-            <div key={titulo} className="card p-6 flex flex-col gap-4">
-              <div className="w-12 h-12 rounded-full flex items-center justify-center flex-shrink-0"
-                style={{ backgroundColor: `${cor}14` }}>
-                <Icon size={22} style={{ color: cor }} />
+          <h3 className="font-display text-2xl md:text-3xl font-bold text-center mb-2" style={{ color: 'var(--charcoal)' }}>
+            Para quem é o AuriRegula Pro?
+          </h3>
+          <p className="text-sm text-center mb-10" style={{ color: 'var(--gray)' }}>
+            Desenvolvido por e para profissionais da auriculoterapia clínica
+          </p>
+          <div className="grid grid-cols-1 md:grid-cols-3 gap-5">
+            {[
+              { icon: GraduationCap, titulo: 'Recém-formados',          desc: 'Acabou de concluir sua formação e precisa de segurança nos atendimentos? Os protocolos guiados e a avaliação por sintomas vão estruturar sua prática desde o primeiro paciente.', cor: 'var(--forest)' },
+              { icon: Stethoscope,   titulo: 'Profissionais em atividade', desc: 'Já atende mas quer aprofundar o raciocínio clínico? O Método R.E.G.U.L.A.® oferece embasamento neurofisiológico para elevar a qualidade dos seus resultados.',             cor: 'var(--gold)'   },
+              { icon: Leaf,          titulo: 'Terapeutas integrativas',  desc: 'Trabalha com outras terapias e quer integrar a auriculoterapia ao seu atendimento? A plataforma organiza sua prática e facilita o registro de evolução clínica.',               cor: 'var(--rose)'   },
+            ].map(({ icon: Icon, titulo, desc, cor }) => (
+              <div key={titulo} className="card p-6 flex flex-col gap-4">
+                <div className="w-12 h-12 rounded-full flex items-center justify-center flex-shrink-0"
+                  style={{ backgroundColor: `${cor}14` }}>
+                  <Icon size={22} style={{ color: cor }} />
+                </div>
+                <div>
+                  <p className="font-display text-lg font-bold mb-2" style={{ color: 'var(--charcoal)' }}>{titulo}</p>
+                  <p className="text-sm leading-relaxed" style={{ color: 'var(--gray)' }}>{desc}</p>
+                </div>
               </div>
-              <div>
-                <p className="font-display text-lg font-bold mb-2" style={{ color: 'var(--charcoal)' }}>{titulo}</p>
-                <p className="text-sm leading-relaxed" style={{ color: 'var(--gray)' }}>{desc}</p>
-              </div>
-            </div>
-          ))}
+            ))}
+          </div>
         </div>
+      </section>
+
+      {/* Seção de dores */}
+      <section className="px-5 md:px-12 py-14 md:py-16" style={{ backgroundColor: 'var(--cream)' }}>
+        <div className="max-w-5xl mx-auto">
+          <h3 className="font-display text-2xl md:text-3xl font-bold text-center mb-2" style={{ color: 'var(--charcoal)' }}>
+            Sua prática merece mais do que improvisar
+          </h3>
+          <p className="text-sm text-center mb-10" style={{ color: 'var(--gray)' }}>
+            Você se reconhece em alguma dessas situações?
+          </p>
+          <div className="grid grid-cols-1 md:grid-cols-3 gap-4 mb-10">
+            {[
+              { icon: AlertCircle,   desc: 'Insegurança ao escolher os pontos sem um método clínico estruturado' },
+              { icon: ClipboardList, desc: 'Dificuldade em registrar e acompanhar a evolução dos pacientes'       },
+              { icon: BookOpen,      desc: 'Falta de embasamento científico para justificar suas escolhas terapêuticas' },
+            ].map(({ icon: Icon, desc }) => (
+              <div key={desc} className="card p-5 flex items-start gap-4"
+                style={{ borderLeft: '4px solid rgba(184,151,74,0.40)' }}>
+                <div className="w-9 h-9 rounded-full flex items-center justify-center flex-shrink-0"
+                  style={{ backgroundColor: 'rgba(184,151,74,0.10)' }}>
+                  <Icon size={16} style={{ color: 'var(--gold)' }} />
+                </div>
+                <p className="text-sm leading-relaxed" style={{ color: 'var(--charcoal)' }}>{desc}</p>
+              </div>
+            ))}
+          </div>
+          <div className="text-center p-8 rounded-[18px]" style={{ background: 'linear-gradient(160deg, #1a3a2a 0%, #2d5a42 100%)' }}>
+            <p className="font-display text-xl md:text-2xl font-bold text-white mb-2">
+              O AuriRegula Pro resolve exatamente isso.
+            </p>
+            <p className="text-sm mb-6" style={{ color: 'rgba(255,255,255,0.70)' }}>
+              Protocolos validados, raciocínio clínico estruturado e gestão completa — em um app feito por quem entende a prática.
+            </p>
+            <a
+              href="#planos"
+              className="inline-flex items-center gap-2 px-7 py-3 rounded-[12px] text-sm font-bold transition-all active:scale-95"
+              style={{ backgroundColor: 'var(--gold)', color: 'white' }}
+            >
+              Quero estruturar minha prática
+              <ArrowRight size={15} />
+            </a>
+          </div>
         </div>
       </section>
 
       {/* FAQ */}
-      <FaqSection />
+      <section className="px-5 md:px-12 py-14 md:py-16" style={{ backgroundColor: 'white' }}>
+        <div className="max-w-3xl mx-auto">
+          <h3 className="font-display text-2xl md:text-3xl font-bold text-center mb-2" style={{ color: 'var(--charcoal)' }}>
+            Perguntas frequentes
+          </h3>
+          <p className="text-sm text-center mb-10" style={{ color: 'var(--gray)' }}>
+            Tire suas dúvidas antes de assinar
+          </p>
+          <div className="card p-4 md:p-6">
+            {FAQS.map(f => <FaqItem key={f.pergunta} pergunta={f.pergunta} resposta={f.resposta} />)}
+          </div>
+        </div>
+      </section>
 
       {/* Planos */}
-      <section id="planos" className="px-5 md:px-12 py-14 md:py-16" style={{ backgroundColor: 'white' }}>
+      <section id="planos" className="px-5 md:px-12 py-14 md:py-16" style={{ backgroundColor: 'var(--cream)' }}>
         <div className="max-w-5xl mx-auto">
           <div className="relative flex items-center justify-center mb-2">
-            {/* <Image
-              src="/images/SeloGarantia7Dias.png"
-              alt="Garantia de 7 dias"
-              width={90}
-              height={90}
-              className="absolute left-0 top-1/2 -translate-y-1/2 opacity-90 rotate-[-10deg] hidden md:block"
-            /> */}
             <h3 className="font-display text-2xl md:text-3xl font-bold text-center" style={{ color: 'var(--charcoal)' }}>
               Planos e preços
             </h3>
@@ -285,10 +395,30 @@ export default function LandingPage() {
               className="absolute right-0 top-1/2 -translate-y-1/2 opacity-90 rotate-[10deg] hidden md:block"
             />
           </div>
-          <p className="text-sm text-center mb-10" style={{ color: 'var(--gray)' }}>
-            Escolha o plano ideal para sua prática · Garantia de 7 dias
+          <p className="text-sm text-center mb-8" style={{ color: 'var(--gray)' }}>
+            Escolha o plano ideal para sua prática · Cancele quando quiser
           </p>
 
+          {/* Garantia */}
+          <div className="max-w-2xl mx-auto mb-8">
+            <div className="p-5 rounded-[14px] flex flex-col md:flex-row items-center gap-4"
+              style={{ backgroundColor: 'rgba(26,58,42,0.06)', border: '2px solid rgba(26,58,42,0.12)' }}>
+              <div className="w-12 h-12 rounded-full flex items-center justify-center flex-shrink-0"
+                style={{ backgroundColor: 'rgba(26,58,42,0.10)' }}>
+                <Shield size={22} style={{ color: 'var(--forest)' }} />
+              </div>
+              <div className="text-center md:text-left">
+                <p className="text-sm font-bold mb-0.5" style={{ color: 'var(--charcoal)' }}>
+                  Garantia incondicional de 7 dias — risco zero
+                </p>
+                <p className="text-xs leading-relaxed" style={{ color: 'var(--gray)' }}>
+                  Se nos primeiros 7 dias você não estiver 100% satisfeito, devolvemos cada centavo. Sem perguntas, sem burocracia.
+                </p>
+              </div>
+            </div>
+          </div>
+
+          {/* Cards de plano */}
           <div className="grid grid-cols-1 md:grid-cols-2 gap-5 max-w-2xl mx-auto">
             {PLANOS.map(plano => (
               <div
@@ -302,11 +432,15 @@ export default function LandingPage() {
                 }}
               >
                 {plano.destaque && (
-                  <div
-                    className="absolute -top-3 left-1/2 -translate-x-1/2 px-3 py-1 rounded-full text-[10px] font-bold uppercase tracking-wide"
-                    style={{ backgroundColor: 'var(--gold)', color: 'white' }}
-                  >
+                  <div className="absolute -top-3 left-1/2 -translate-x-1/2 px-3 py-1 rounded-full text-[10px] font-bold uppercase tracking-wide whitespace-nowrap"
+                    style={{ backgroundColor: 'var(--gold)', color: 'white' }}>
                     Mais popular
+                  </div>
+                )}
+                {plano.lancamento && !plano.destaque && (
+                  <div className="absolute -top-3 left-1/2 -translate-x-1/2 px-3 py-1 rounded-full text-[10px] font-bold uppercase tracking-wide whitespace-nowrap"
+                    style={{ backgroundColor: 'var(--forest)', color: 'white' }}>
+                    Oferta de lançamento
                   </div>
                 )}
 
@@ -315,12 +449,19 @@ export default function LandingPage() {
                     style={{ color: plano.destaque ? 'rgba(255,255,255,0.60)' : 'var(--gray)' }}>
                     {plano.nome}
                   </p>
+                  {plano.precoOriginal && (
+                    <p className="text-sm line-through mb-0.5"
+                      style={{ color: plano.destaque ? 'rgba(255,255,255,0.40)' : 'var(--gray-light)' }}>
+                      {plano.precoOriginal}
+                    </p>
+                  )}
                   <div className="flex items-end gap-1">
                     <span className="font-display text-3xl font-bold"
                       style={{ color: plano.destaque ? 'white' : 'var(--charcoal)' }}>
                       {plano.preco}
                     </span>
-                    <span className="text-sm pb-0.5" style={{ color: plano.destaque ? 'rgba(255,255,255,0.65)' : 'var(--gray)' }}>
+                    <span className="text-sm pb-0.5"
+                      style={{ color: plano.destaque ? 'rgba(255,255,255,0.65)' : 'var(--gray)' }}>
                       {plano.periodo}
                     </span>
                   </div>
@@ -372,10 +513,11 @@ export default function LandingPage() {
                 <p className="text-xs font-semibold uppercase tracking-wide mb-1" style={{ color: 'rgba(255,255,255,0.70)' }}>
                   Formação
                 </p>
-                <h4 className="font-display text-xl md:text-2xl font-bold leading-snug mb-3" style={{ color: 'white' }}>
+                <h4 className="font-display text-xl md:text-2xl font-bold leading-snug mb-2" style={{ color: 'white' }}>
                   Formação Completa em Auriculoterapia Clínica &amp; Integrativa
                 </h4>
-                <div className="flex items-end gap-1 mb-4">
+                <div className="flex items-end gap-2 mb-4">
+                  <p className="text-sm line-through" style={{ color: 'rgba(255,255,255,0.50)' }}>R$ 297,00</p>
                   <span className="font-display text-4xl font-bold text-white">R$ 197,00</span>
                   <span className="text-sm pb-1" style={{ color: 'rgba(255,255,255,0.70)' }}>à vista</span>
                 </div>
@@ -414,26 +556,30 @@ export default function LandingPage() {
       </section>
 
       {/* CTA final */}
-      <section className="px-5 md:px-12 py-14 text-center">
+      <section className="px-5 md:px-12 py-14 text-center" style={{ backgroundColor: 'white' }}>
         <div className="max-w-2xl mx-auto">
           <h3 className="font-display text-2xl md:text-3xl font-bold mb-3" style={{ color: 'var(--charcoal)' }}>
-            Transforme sua prática clínica
+            Comece hoje. Veja a diferença na sua próxima sessão.
           </h3>
           <p className="text-sm mb-7" style={{ color: 'var(--gray)' }}>
-            Junte-se aos auriculoterapeutas que já aplicam o Método R.E.G.U.L.A.® com mais segurança e eficácia.
+            Junte-se aos auriculoterapeutas que já aplicam o Método R.E.G.U.L.A.® com mais segurança e eficácia. Acesso imediato após a assinatura.
           </p>
-          <Link
-            href="/#planos"
+          <a
+            href="#planos"
             className="inline-flex items-center gap-2 px-8 py-3.5 rounded-[12px] text-sm font-bold transition-all active:scale-95"
             style={{ backgroundColor: 'var(--forest)', color: 'white', boxShadow: '0 4px 20px rgba(26,58,42,0.25)' }}
           >
             Ver Planos
-          </Link>
+            <ArrowRight size={15} />
+          </a>
+          <p className="text-xs mt-3" style={{ color: 'var(--gray-light)' }}>
+            A partir de R$ 9,99/mês · Garantia de 7 dias · Sem contrato
+          </p>
         </div>
       </section>
 
       {/* Footer */}
-      <footer className="border-t px-5 md:px-12 py-6" style={{ borderColor: 'rgba(26,58,42,0.10)', backgroundColor: 'white' }}>
+      <footer className="border-t px-5 md:px-12 py-6" style={{ borderColor: 'rgba(26,58,42,0.10)', backgroundColor: 'var(--cream)' }}>
         <div className="max-w-5xl mx-auto flex flex-col md:flex-row items-center justify-between gap-3">
           <p className="text-xs" style={{ color: 'var(--gray-light)' }}>
             © 2025 AuriRegula Pro · Método R.E.G.U.L.A.®
