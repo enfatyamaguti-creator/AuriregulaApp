@@ -11,7 +11,7 @@ const PLANOS = [
   {
     id: 'mensal',
     nome: 'Mensal',
-    preco: 'R$ 19,90',
+    preco: 'R$ 9,99',
     periodo: '/mês',
     detalhe: null,
     destaque: false,
@@ -21,9 +21,9 @@ const PLANOS = [
   {
     id: 'anual',
     nome: 'Anual',
-    preco: 'R$ 97,90',
+    preco: 'R$ 67,00',
     periodo: '/ano',
-    detalhe: 'R$ 8,16/mês · Economia de 59%',
+    detalhe: 'R$ 5,58/mês · Economia de 44%',
     destaque: true,
     checkout: process.env.NEXT_PUBLIC_CHECKOUT_ANUAL ?? '#',
     items: ['Tudo do plano mensal', 'Atualizações de protocolos incluídas', 'Novos módulos em primeira mão', 'Suporte prioritário'],
@@ -376,7 +376,7 @@ export default function LandingPage() {
                   Formação Completa em Auriculoterapia Clínica &amp; Integrativa
                 </h4>
                 <div className="flex items-end gap-1 mb-4">
-                  <span className="font-display text-4xl font-bold text-white">R$ 297,00</span>
+                  <span className="font-display text-4xl font-bold text-white">R$ 197,00</span>
                   <span className="text-sm pb-1" style={{ color: 'rgba(255,255,255,0.70)' }}>à vista</span>
                 </div>
                 <ul className="space-y-2">
