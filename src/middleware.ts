@@ -9,6 +9,8 @@ const PUBLIC_PATHS = [
   '/privacidade',
   '/esqueci-senha',
   '/auth/callback',
+  '/sem-plano',
+  '/cadastro',
 ];
 const ADMIN_PATHS = ['/admin'];
 
@@ -60,8 +62,8 @@ export async function middleware(request: NextRequest) {
   // Controle de assinatura (admin sempre passa)
   if (!isAdmin) {
     const status = user.user_metadata?.subscription_status as string | undefined;
-    if (status === 'expirado') {
-      return NextResponse.redirect(new URL('/?expired=1', request.url));
+    if (status !== 'ativo') {
+      return NextResponse.redirect(new URL('/sem-plano', request.url));
     }
   }
 
@@ -70,6 +72,6 @@ export async function middleware(request: NextRequest) {
 
 export const config = {
   matcher: [
-    '/((?!_next/static|_next/image|favicon\\.ico|images|.*\\.png$|.*\\.jpg$|.*\\.svg$|api/admin/setup).*)',
+    '/((?!_next/static|_next/image|favicon\\.ico|images|.*\\.png$|.*\\.jpg$|.*\\.svg$|api/).*)',
   ],
 };
