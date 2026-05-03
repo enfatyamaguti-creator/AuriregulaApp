@@ -44,7 +44,7 @@ export const PONTOS_AURICULARES: Record<string, PontoAuricular> = {
   'Punho':                   { nome: 'Punho',                   px: 40, py: 29, zona: 'Fossa escafoide — medial', cor: 'col' },
   'Cabeça':                  { nome: 'Cabeça',                  px: 58, py: 70, zona: 'Antitrago — borda inferior', cor: 'neuro' },
   'Tronco Cerebral':         { nome: 'Tronco Cerebral',         px: 29, py: 25, zona: 'Antitrago — zona central', cor: 'neuro' },
-  'Ponto da queixa principal': { nome: 'Ponto da queixa principal', px: 50, py: 30, zona: 'Lóbulo — definido na avaliação', cor: 'main' },
+
 };
 
 export const CORES_PONTOS: Record<string, string> = {

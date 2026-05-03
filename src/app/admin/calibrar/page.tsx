@@ -48,7 +48,7 @@ const PONTOS_META: Record<string, { zona: string; cor: string }> = {
   'Punho':                     { zona: 'Fossa escafoide — medial',        cor: 'col'      },
   'Cabeça':                    { zona: 'Antitrago — borda inferior',      cor: 'neuro'    },
   'Tronco Cerebral':           { zona: 'Antitrago — zona central',        cor: 'neuro'    },
-  'Ponto da queixa principal': { zona: 'Lóbulo — definido na avaliação', cor: 'main'     },
+
 };
 
 const ORDEM = Object.keys(PONTOS_META);
