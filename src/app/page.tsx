@@ -264,7 +264,7 @@ export default function LandingPage() {
       <FaqSection />
 
       {/* Planos */}
-      <section className="px-5 md:px-12 py-14 md:py-16" style={{ backgroundColor: 'white' }}>
+      <section id="planos" className="px-5 md:px-12 py-14 md:py-16" style={{ backgroundColor: 'white' }}>
         <div className="max-w-5xl mx-auto">
           <div className="relative flex items-center justify-center mb-2">
             {/* <Image
@@ -423,11 +423,11 @@ export default function LandingPage() {
             Junte-se aos auriculoterapeutas que já aplicam o Método R.E.G.U.L.A.® com mais segurança e eficácia.
           </p>
           <Link
-            href="/login"
+            href="/#planos"
             className="inline-flex items-center gap-2 px-8 py-3.5 rounded-[12px] text-sm font-bold transition-all active:scale-95"
             style={{ backgroundColor: 'var(--forest)', color: 'white', boxShadow: '0 4px 20px rgba(26,58,42,0.25)' }}
           >
-            Criar minha conta
+            Ver Planos
           </Link>
         </div>
       </section>

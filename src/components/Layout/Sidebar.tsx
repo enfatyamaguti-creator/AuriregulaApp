@@ -66,6 +66,8 @@ export default function Sidebar() {
                 backgroundColor: active ? 'rgba(255,255,255,0.13)' : 'transparent',
                 color: active ? 'white' : 'rgba(255,255,255,0.60)',
               }}
+              onMouseEnter={e => { if (!active) e.currentTarget.style.backgroundColor = 'rgba(255,255,255,0.08)'; }}
+              onMouseLeave={e => { if (!active) e.currentTarget.style.backgroundColor = 'transparent'; }}
             >
               <Icon size={17} strokeWidth={active ? 2.2 : 1.7} />
               {label}
@@ -83,6 +85,8 @@ export default function Sidebar() {
             color: pathname === '/perfil' ? 'white' : 'rgba(255,255,255,0.55)',
             backgroundColor: pathname === '/perfil' ? 'rgba(255,255,255,0.13)' : 'transparent',
           }}
+          onMouseEnter={e => { if (pathname !== '/perfil') e.currentTarget.style.backgroundColor = 'rgba(255,255,255,0.08)'; }}
+          onMouseLeave={e => { if (pathname !== '/perfil') e.currentTarget.style.backgroundColor = 'transparent'; }}
         >
           <UserCircle size={16} />
           Meu perfil

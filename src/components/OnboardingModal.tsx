@@ -16,6 +16,15 @@ export default function OnboardingModal() {
     });
   }, []);
 
+  useEffect(() => {
+    if (visivel) {
+      document.body.style.overflow = 'hidden';
+    } else {
+      document.body.style.overflow = '';
+    }
+    return () => { document.body.style.overflow = ''; };
+  }, [visivel]);
+
   async function fechar() {
     setVisivel(false);
     const supabase = createClient();
@@ -26,7 +35,7 @@ export default function OnboardingModal() {
 
   return (
     <div
-      className="fixed inset-0 z-50 flex items-end md:items-center justify-center"
+      className="fixed inset-0 z-[60] flex items-end md:items-center justify-center"
       style={{ backgroundColor: 'rgba(0,0,0,0.55)' }}
     >
       <div
