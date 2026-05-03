@@ -63,6 +63,7 @@ function CadastroForm() {
     // Faz login automaticamente
     const supabase = createClient();
     await supabase.auth.signInWithPassword({ email, password: senha });
+    router.refresh();
     router.push('/home');
   }
 
