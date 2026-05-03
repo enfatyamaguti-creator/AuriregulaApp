@@ -11,6 +11,7 @@ const PUBLIC_PATHS = [
   '/auth/callback',
   '/sem-plano',
   '/cadastro',
+  '/obrigado',
 ];
 const ADMIN_PATHS = ['/admin'];
 

@@ -1,5 +1,6 @@
 import { createClient } from '@supabase/supabase-js';
 import { NextRequest, NextResponse } from 'next/server';
+import { Resend } from 'resend';
 
 const DIAS_POR_FREQUENCIA: Record<string, number> = {
   monthly: 31,
@@ -40,6 +41,54 @@ async function ativarAssinatura(
     updated_at:     new Date().toISOString(),
   }, { onConflict: 'user_id' });
   return expiracao;
+}
+
+// ── Email de boas-vindas ──────────────────────────────────────────────────────
+async function enviarEmailCadastro(email: string, plano: string) {
+  const apiKey = process.env.RESEND_API_KEY;
+  if (!apiKey) { console.warn('[webhook] RESEND_API_KEY não configurado'); return; }
+
+  const resend   = new Resend(apiKey);
+  const from     = process.env.RESEND_FROM ?? 'AuriRegula Pro <noreply@auriregula.com.br>';
+  const appUrl   = process.env.NEXT_PUBLIC_APP_URL ?? 'https://auriregula.com.br';
+  const link     = `${appUrl}/cadastro?email=${encodeURIComponent(email)}`;
+
+  const { error } = await resend.emails.send({
+    from,
+    to:      email,
+    subject: '✅ Seu acesso ao AuriRegula Pro está pronto!',
+    html: `
+      <div style="font-family:sans-serif;max-width:560px;margin:0 auto;padding:32px 24px;color:#1a1a1a">
+        <div style="text-align:center;margin-bottom:32px">
+          <h1 style="font-size:24px;font-weight:700;color:#1a3a2a;margin:0">AuriRegula Pro</h1>
+          <p style="font-size:12px;color:#888;margin:4px 0 0">Método R.E.G.U.L.A.®</p>
+        </div>
+
+        <h2 style="font-size:20px;font-weight:700;margin:0 0 8px">Bem-vindo! Seu acesso está confirmado 🎉</h2>
+        <p style="color:#555;line-height:1.6;margin:0 0 24px">
+          Sua assinatura do plano <strong>${plano}</strong> foi aprovada com sucesso.
+          Clique no botão abaixo para criar sua conta e começar a usar o app.
+        </p>
+
+        <div style="text-align:center;margin:32px 0">
+          <a href="${link}"
+            style="background:#1a3a2a;color:white;padding:14px 32px;border-radius:10px;text-decoration:none;font-weight:700;font-size:15px;display:inline-block">
+            Criar minha conta
+          </a>
+        </div>
+
+        <p style="font-size:12px;color:#aaa;text-align:center;margin:24px 0 0">
+          Este link é válido por 48 horas. Se não solicitou esta compra, ignore este email.
+        </p>
+        <p style="font-size:12px;color:#ccc;text-align:center;margin:4px 0 0">
+          Ou acesse: <a href="${link}" style="color:#1a3a2a">${link}</a>
+        </p>
+      </div>
+    `,
+  });
+
+  if (error) console.error('[webhook] Erro ao enviar email:', error);
+  else console.log(`[webhook] 📧 Email enviado para: ${email}`);
 }
 
 // ── GET — diagnóstico (protegido pelo mesmo token) ────────────────────────────
@@ -155,6 +204,7 @@ export async function POST(req: NextRequest) {
       }
       await supabase.from('cadastros_pendentes').insert({ email, offer_id: planName, dias });
       console.log(`[webhook] 🕐 Pendência criada: ${email} | plano: ${planName}`);
+      await enviarEmailCadastro(email, planName);
       return NextResponse.json({ ok: true, action: 'pendente_cadastro', email });
     }
 
